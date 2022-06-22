@@ -16,12 +16,12 @@ class QThreadPractice(QtWidgets.QWidget):
         self.timerThread.timeLeftSignal.connect(self.updateLineEditTimeLeft, QtCore.Qt.AutoConnection)
         self.timerThread.finished.connect(self.timerFinished)
 
-        self.urlChecker = MyUrlChecker()
-        self.urlChecker.urlResponceSignal.connect(self.updateUrlCheck, QtCore.Qt.AutoConnection)
+        #self.urlChecker = MyUrlChecker()
+        #self.urlChecker.urlResponceSignal.connect(self.updateUrlCheck, QtCore.Qt.AutoConnection)
 
-        self.systemInfo = SystemInfoThread()
-        self.systemInfo.start()
-        self.systemInfo.systemInfoSignal.connect(self.updateSystemInfo, QtCore.Qt.AutoConnection)
+        #self.systemInfo = SystemInfoThread()
+        #self.systemInfo.start()
+        #self.systemInfo.systemInfoSignal.connect(self.updateSystemInfo, QtCore.Qt.AutoConnection)
         self.ui.spinBoxSystemInfoDelay.valueChanged.connect(self.setSystemInfoDelay)
 
         self.ui.pushButtonTimerStart.clicked.connect(self.handleTimer)
@@ -89,35 +89,35 @@ class MyTimer(QtCore.QThread):
                 self.status = False
 
 
-class MyUrlChecker(QtCore.QThread):
-    urlResponceSignal = QtCore.Signal(int)
+# class MyUrlChecker(QtCore.QThread):
+#     urlResponceSignal = QtCore.Signal(int)
+#
+#     def setUrl(self, url):
+#         self.__url = url
+#
+#     def setDelay(self, delay):
+#         self.__delay = delay
+#
+#     def run(self):
+#         self.status = True
+#
+#         while self.status:
+#             responce = requests.get(self.__url)
+#             self.urlResponceSignal.emit(responce.status_code)
+#             time.sleep(self.__delay)
 
-    def setUrl(self, url):
-        self.__url = url
 
-    def setDelay(self, delay):
-        self.__delay = delay
-
-    def run(self):
-        self.status = True
-
-        while self.status:
-            responce = requests.get(self.__url)
-            self.urlResponceSignal.emit(responce.status_code)
-            time.sleep(self.__delay)
-
-
-class SystemInfoThread(QtCore.QThread):
-    systemInfoSignal = QtCore.Signal(list)
-
-    def run(self):
-        self.delay = 1
-        while True:
-            cpu_value = psutil.cpu_percent()
-            ram = psutil.virtual_memory()
-            ram_value = int(ram.used * 100 / ram.total)
-            self.systemInfoSignal.emit([cpu_value, ram_value])
-            time.sleep(self.delay)
+# class SystemInfoThread(QtCore.QThread):
+#     systemInfoSignal = QtCore.Signal(list)
+#
+#     def run(self):
+#         self.delay = 1
+#         while True:
+#             cpu_value = psutil.cpu_percent()
+#             ram = psutil.virtual_memory()
+#             ram_value = int(ram.used * 100 / ram.total)
+#             self.systemInfoSignal.emit([cpu_value, ram_value])
+#             time.sleep(self.delay)
 
 
 if __name__ == "__main__":
